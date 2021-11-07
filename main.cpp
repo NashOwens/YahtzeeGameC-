@@ -15,7 +15,6 @@ const int NO_OF_ACCOUNTS			= 3;
 
 void displayMenu();
 int getMenuChoice();
-Player selectPlayer(Player* players);
 void displayPlayers();
 
 
@@ -87,34 +86,32 @@ int getMenuChoice()
 Player selectPlayer(Player* players) 
 {
 	Player player;
-	string password = NULL;
-	string playerChoice = NULL;
-	bool valid = false;
+	string password;
+	string playerChoice;
 
 	cout << "Enter a player name: ";
 	cin >> playerChoice;
-	cout << "Enter Password: ";
-	cin >> password;
-	
-	while (!valid)
+	for (int i = 0; i < NO_OF_ACCOUNTS; i++)
 	{
-		cout << "Enter a player name: ";
-		cin >> playerChoice;
-		cout << "Enter Password: ";
-		cin >> password;
-		for (int i = 0; i < NO_OF_ACCOUNTS; i++)
-		{
-			if ((playerChoice == players[i].getPlayerName() & players[i].isPassCorrect(password)))
+		cout << players->getPlayerName();
+			if (players->isUserCorrect(playerChoice) && i < NO_OF_ACCOUNTS)
 			{
-				player = players[i];
-				cout << "Player selected \n ---------------\n";
-				player.printSummary();
-				valid = true;
-				break;
+				cout << "Player selected: " << players[i].getPlayerName();
+				cout << "\nEnter Password for this Player: ";
+				cin >> password;
+				for (int trys = 0; trys < 3; trys++) {
+					cout << "Incorrect Password... \n Try again (" << trys << "): ";
+					cin >> password;
+					if ((players->isPassCorrect(password)))
+					{
+						cout << "Login Successful!\n";
+						player.printSummary();
+					}
+				}
 			}
-			else if (valid)
-				break;
-		}
+			else {
+				cout << "Incorrect";
+			}
 	}
 	return player;
 }

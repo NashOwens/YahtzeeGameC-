@@ -10,14 +10,17 @@ public:
 	Player(string PlayerName, string password, int playerHighscore);
 	~Player();
 	void printSummary();
-	const string getPlayerName() const { return playerName; };
+	string getPlayerName() { return playerName; };
 	int getPlayerHighScore() const { return playerHighscore; };
 	virtual bool isPassCorrect(string password);
+	virtual bool isUserCorrect(string user);
+
+	string playerName;
 protected:
 	string getPassword() { return password; };
 
 private:
-	string playerName;
+
 	string password;
 	int playerHighscore=0;
 };
