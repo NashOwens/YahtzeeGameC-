@@ -11,7 +11,7 @@ public:
 	~Player();
 	void printSummary();
 	string getPlayerName() { return playerName; };
-	int getPlayerHighScore() const { return playerHighscore; };
+	int getPlayerHighScore() { return playerHighscore; };
 	virtual bool isPassCorrect(string password);
 	virtual bool isUserCorrect(string user);
 
