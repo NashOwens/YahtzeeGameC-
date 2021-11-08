@@ -67,7 +67,9 @@ int main() {
 		} while (choice != MENU_EXIT);
 
 		for (int i = 0; i > playerData.size(); i++)
+		{
 			delete playerData[i];
+		}
 
 
 	return 0;
