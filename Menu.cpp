@@ -16,6 +16,9 @@ using namespace std;
 Menu::Menu(vector<Player*> players) : players(players) {};
 Menu::~Menu() {};
 
+Menu::playerMenu::playerMenu(Player* player) : player(*player) {};
+Menu::playerMenu::~playerMenu() {};
+
 void displayMenu();
 void playerMenu();
 int getMenuChoice();
@@ -41,11 +44,11 @@ int Menu::Start()
 		displayMenu();
 		choice = getMenuChoice();
 
-		Player currentPlayer;
+		Player* currentPlayer = new Player("","",0);
 
 		switch (choice)
 		{
-		case MENU_CHOOSE_PLAYER: currentPlayer = selectPlayer(players); playerMenu(); break; // need player menu here after!!
+		case MENU_CHOOSE_PLAYER: *currentPlayer = selectPlayer(players); playerMenu(currentPlayer).playerStart(currentPlayer); break; // need player menu here after!!
 		case MENU_ADD_PLAYER: players.push_back(addPlayer()); break;
 		case MENU_REMOVE_PLAYER: players.erase(players.begin() + removePlayer(players)); break;// need more work here
 		case MENU_SORT_ALPHABETICALLY: sort(players.begin(), players.end(), sortAlphabet); break;
@@ -63,6 +66,32 @@ int Menu::Start()
 
 	return 0;
 };
+int Menu::playerMenu::playerStart(Player* player)
+{
+	const int MENU_EXIT = 0;
+	const int MENU_PLAY_GAME = 1;
+	const int MENU_SHOW_GAME_HISTORY = 2;
+	const int MENU_LOGOUT = 3;
+	int choice=-1;
+
+	while (choice != MENU_LOGOUT) 
+	{
+		cout << "Welcome to Yhatzee " << player->getPlayerName() << "\n----------------------";
+		cout << "\n1. Start New Game\n2. Show Game History\n3. Logout\n 0. EXIT\n";
+
+		cin >> choice;
+		switch (choice) 
+		{
+		case MENU_PLAY_GAME: break;//
+		case MENU_SHOW_GAME_HISTORY: break;//
+		case MENU_LOGOUT: break;//
+		case MENU_EXIT: return 0;
+		default: 
+			break;
+		}
+	}
+	return 0;
+}
 bool sortAlphabet(Player* fp, Player* sp)
 {
 	string fc = fp->getPlayerName();
@@ -144,7 +173,7 @@ Player* addPlayer()
 
 Player selectPlayer(vector<Player*> players)
 {
-	Player player;
+	Player* player = new Player("","",0);
 	string password;
 	string playerChoice;
 
@@ -161,9 +190,9 @@ Player selectPlayer(vector<Player*> players)
 				if ((players[i]->isPassCorrect(password)))
 				{
 					cout << "Login Successful!\n";
-					player = *players[i];
+					player = players[i];
 					cout << "Player Details:\n--------------\n";
-					displayPlayer(players[i]);
+					players[i]->printSummary();
 					break;
 				}
 				cout << "Incorrect Password... \n Try again (" << trys << "): ";
@@ -174,5 +203,5 @@ Player selectPlayer(vector<Player*> players)
 			cout << "\nNo Players found...";
 		}
 	}
-	return player;
+	return *player;
 }

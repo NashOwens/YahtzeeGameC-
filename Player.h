@@ -6,7 +6,6 @@ using namespace std;
 class Player
 {
 public:
-	Player() = default;
 	Player(string PlayerName, string password, int playerHighscore);
 	~Player();
 	void printSummary();
@@ -15,12 +14,11 @@ public:
 	virtual bool isPassCorrect(string password);
 	virtual bool isUserCorrect(string user);
 
-	string playerName;
 protected:
 	string getPassword() { return password; };
 
 private:
-
+	string playerName;
 	string password;
 	int playerHighscore=0;
 };
