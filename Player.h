@@ -8,14 +8,11 @@ class Player
 public:
 	Player(string PlayerName, string password, int playerHighscore);
 	~Player();
-	void printSummary();
+	virtual void printSummary() const;
 	string getPlayerName() { return playerName; };
 	int getPlayerHighScore() { return playerHighscore; };
 	virtual bool isPassCorrect(string password);
 	virtual bool isUserCorrect(string user);
-
-protected:
-	string getPassword() { return password; };
 
 private:
 	string playerName;
