@@ -20,7 +20,7 @@ Menu::~Menu() {};
 bool sortHighscore(Player* fp, Player* sp);
 bool sortAlphabet(Player* fp, Player* sp);
 
-Menu::playerMenu::playerMenu(Player* player) : player(*player) {};
+Menu::playerMenu::playerMenu() {};
 Menu::playerMenu::~playerMenu() {};
 
 
@@ -36,19 +36,23 @@ int Menu::Start()
 		cout << "------------            ---------------\n";
 		vector<Player*>::iterator it(players.begin());
 		while (it != players.end()) {
-			(*it++)->printSummary();
+			(*it)->printSummary();
+			++it;
 		}
 		cout << "\n";
 		displayMenu();
 		choice = getMenuChoice();
 
-		Player* currentPlayer = new Player("","",0);
 
 		switch (choice)
 		{
-		case MENU_CHOOSE_PLAYER: *currentPlayer = selectPlayer(players); playerMenu(currentPlayer).playerStart(currentPlayer); break; // need player menu here after!!
+		case MENU_CHOOSE_PLAYER: {Player* currentPlayer = selectPlayer(players); playerMenu().playerStart(currentPlayer); delete currentPlayer; } break; // need player menu here after!!
 		case MENU_ADD_PLAYER: players.push_back(addPlayer()); break;
-		case MENU_REMOVE_PLAYER: players.erase(players.begin(), players.end(), selectPlayer(players)); break;// need more work here
+		case MENU_REMOVE_PLAYER: {break; //{ Player* temp = selectPlayer(players);
+			//vector<Player*>::iterator it(players.begin()); int counter=0;
+			//while (it != players.end())
+			//	if ((*it)->isUserCorrect())
+		} //players.erase(players.begin(), players.end(), selectPlayer(players)); break;// need more work here
 		case MENU_SORT_ALPHABETICALLY: sort(players.begin(), players.end(), sortAlphabet); break;
 		case MENU_SORT_HIGHSCORE: sort(players.begin(), players.end(), sortHighscore); break;
 
@@ -56,7 +60,7 @@ int Menu::Start()
 			break;
 		}
 
-		delete currentPlayer;
+		//delete currentPlayer;
 
 	} while (choice != MENU_EXIT);
 
@@ -103,17 +107,17 @@ bool sortHighscore(Player* fp, Player* sp)
 {
 	return (fp->getPlayerHighScore() > sp->getPlayerHighScore());
 }
-Player Menu::selectPlayer(vector<Player*> players)
+Player* Menu::selectPlayer(vector<Player*> players)
 {
 	string password;
 	string playerChoice;
 
-	cout << "Player removal\n-----------------\nEnter a player name: ";
+	cout << "Player selection\n-----------------\nEnter a player name: ";
 	cin >> playerChoice;
 	vector<Player*>::iterator it(players.begin());
-	while (it!=players.end())//for (int i = 0; i < (int)players.size(); i++)
+	while (it!=players.end())
 	{
-		if ((*it)->isUserCorrect(playerChoice))
+		if (((*it)->isUserCorrect(playerChoice)))
 		{
 			cout << "Player selected: " << (*it)->getPlayerName();
 			cout << "\nEnter Password for this Player: ";
@@ -121,7 +125,7 @@ Player Menu::selectPlayer(vector<Player*> players)
 			for (int trys = 0; trys < 3; trys++) {
 				if (((*it)->isPassCorrect(password)))
 				{
-					return *(*it);
+					return (*it);
 				}
 				cout << "Incorrect Password... \n Try again (" << trys << "): ";
 				cin >> password;
@@ -130,7 +134,9 @@ Player Menu::selectPlayer(vector<Player*> players)
 		else if (it==players.end() && (*it)->isUserCorrect(playerChoice)) {
 			cout << "\nNo Players found...";
 		}
+		(it++);
 	}
+	return new Player("", "", NULL);
 }
 void Menu::displayMenu()
 {
