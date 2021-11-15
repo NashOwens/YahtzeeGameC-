@@ -19,4 +19,9 @@ private:
 	string password;
 	int playerHighscore=0;
 };
+class Scorecard : Player
+{
+public:
+	//Scorecard(string PlayerName, string password, int playerHighscore)
+};
 

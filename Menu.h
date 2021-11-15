@@ -11,9 +11,8 @@ public:
 	int Start();
 	void displayMenu();
 	int getMenuChoice();
-	void displayPlayer(Player* players);
 	Player* addPlayer();
-	Player* selectPlayer(vector<Player*> players);
+	Player* selectPlayer();
 	
 	class playerMenu {
 	public:

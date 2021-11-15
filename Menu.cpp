@@ -37,7 +37,7 @@ int Menu::Start()
 		vector<Player*>::iterator it(players.begin());
 		while (it != players.end()) {
 			(*it)->printSummary();
-			++it;
+			it++;
 		}
 		cout << "\n";
 		displayMenu();
@@ -46,21 +46,32 @@ int Menu::Start()
 
 		switch (choice)
 		{
-		case MENU_CHOOSE_PLAYER: {Player* currentPlayer = selectPlayer(players); playerMenu().playerStart(currentPlayer); delete currentPlayer; } break; // need player menu here after!!
+		case MENU_CHOOSE_PLAYER: playerMenu().playerStart(selectPlayer()); break;
 		case MENU_ADD_PLAYER: players.push_back(addPlayer()); break;
-		case MENU_REMOVE_PLAYER: {break; //{ Player* temp = selectPlayer(players);
-			//vector<Player*>::iterator it(players.begin()); int counter=0;
-			//while (it != players.end())
-			//	if ((*it)->isUserCorrect())
-		} //players.erase(players.begin(), players.end(), selectPlayer(players)); break;// need more work here
+		case MENU_REMOVE_PLAYER: {
+			int counter = 0;
+			Player* temp = selectPlayer();
+			vector<Player*>::iterator it(players.begin());
+			while (it != players.end()) {
+				if (temp == (*it))
+				{
+					players.erase(players.begin() + counter);
+					cout << "\nPlayer removed successfully!!\n";
+					break;
+				}
+				else
+				{
+					counter++;
+				}
+				it++;
+			}
+		} 
 		case MENU_SORT_ALPHABETICALLY: sort(players.begin(), players.end(), sortAlphabet); break;
 		case MENU_SORT_HIGHSCORE: sort(players.begin(), players.end(), sortHighscore); break;
 
 		default:
 			break;
 		}
-
-		//delete currentPlayer;
 
 	} while (choice != MENU_EXIT);
 
@@ -73,7 +84,6 @@ int Menu::Start()
 };
 int Menu::playerMenu::playerStart(Player* player)
 {
-	const int MENU_EXIT = 0;
 	const int MENU_PLAY_GAME = 1;
 	const int MENU_SHOW_GAME_HISTORY = 2;
 	const int MENU_LOGOUT = 3;
@@ -82,17 +92,15 @@ int Menu::playerMenu::playerStart(Player* player)
 	while (choice != MENU_LOGOUT) 
 	{
 		cout << "Welcome to Yhatzee " << player->getPlayerName() << "\n----------------------";
-		cout << "\n1. Start New Game\n2. Show Game History\n3. Logout\n 0. EXIT\n";
+		cout << "\n1. Start New Game\n2. Show Game History\n3. Logout\nOption: ";
 
 		cin >> choice;
 		switch (choice) 
 		{
 		case MENU_PLAY_GAME: break;
 		case MENU_SHOW_GAME_HISTORY: break;
-		case MENU_LOGOUT: break;
-		case MENU_EXIT: return 0;
-		default: 
-			break;
+		case MENU_LOGOUT:;
+		default: break;
 		}
 	}
 	return 0;
@@ -107,7 +115,7 @@ bool sortHighscore(Player* fp, Player* sp)
 {
 	return (fp->getPlayerHighScore() > sp->getPlayerHighScore());
 }
-Player* Menu::selectPlayer(vector<Player*> players)
+Player* Menu::selectPlayer()
 {
 	string password;
 	string playerChoice;
@@ -117,7 +125,7 @@ Player* Menu::selectPlayer(vector<Player*> players)
 	vector<Player*>::iterator it(players.begin());
 	while (it!=players.end())
 	{
-		if (((*it)->isUserCorrect(playerChoice)))
+		if ((*it)->isUserCorrect(playerChoice))
 		{
 			cout << "Player selected: " << (*it)->getPlayerName();
 			cout << "\nEnter Password for this Player: ";
@@ -127,16 +135,21 @@ Player* Menu::selectPlayer(vector<Player*> players)
 				{
 					return (*it);
 				}
-				cout << "Incorrect Password... \n Try again (" << trys << "): ";
+				cout << "Incorrect Password... \n Try again (" << trys +1 << "): ";
 				cin >> password;
 			}
 		}
-		else if (it==players.end() && (*it)->isUserCorrect(playerChoice)) {
-			cout << "\nNo Players found...";
-		}
-		(it++);
+		it++;
 	}
-	return new Player("", "", NULL);
+	cout << "\nNo Players found...\n";
+	cout << "Create acount or continue as guest?\n1. Guest\n2. new account\n Choice: ";
+	int choice=0;
+	cin >> choice;
+	switch (choice) {
+	case 1: return new Player("Guest", "", 0);
+	case 2: break;
+	}
+	return addPlayer();
 }
 void Menu::displayMenu()
 {
@@ -168,38 +181,3 @@ Player* Menu::addPlayer()
 	cin >> Pass;
 	return new Player(Name, Pass, 0);
 }
-
-//Player Menu::selectPlayer(vector<Player*> players)
-//{
-//	Player* player = new Player("","",0);
-//	string password;
-//	string playerChoice;
-//
-//	cout << "Enter a player name: ";
-//	cin >> playerChoice;
-//	for (int i = 0; i < (int)players.size(); i++)
-//	{
-//		if (players[i]->isUserCorrect(playerChoice))
-//		{
-//			cout << "Player selected: " << players[i]->getPlayerName();
-//			cout << "\nEnter Password for this Player: ";
-//			cin >> password;
-//			for (int trys = 0; trys < 3; trys++) {
-//				if ((players[i]->isPassCorrect(password)))
-//				{
-//					cout << "Login Successful!\n";
-//					player = players[i];
-//					cout << "Player Details:\n--------------\n";
-//					players[i]->printSummary();
-//					break;
-//				}
-//				cout << "Incorrect Password... \n Try again (" << trys << "): ";
-//				cin >> password;
-//			}
-//		}
-//		else if (i == players.size() && !(players[i]->isUserCorrect(playerChoice))) {
-//			cout << "\nNo Players found...";
-//		}
-//	}
-//	return *player;
-//}
