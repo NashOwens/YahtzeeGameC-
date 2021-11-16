@@ -35,7 +35,8 @@ int Menu::Start()
 		cout << "Player Name              Highest Score\n";
 		cout << "------------            ---------------\n";
 		vector<Player*>::iterator it(players.begin());
-		while (it != players.end()) {
+		while (it != players.end()) 
+		{
 			(*it)->printSummary();
 			it++;
 		}
@@ -48,15 +49,18 @@ int Menu::Start()
 		{
 		case MENU_CHOOSE_PLAYER: playerMenu().playerStart(selectPlayer()); break;
 		case MENU_ADD_PLAYER: players.push_back(addPlayer()); break;
-		case MENU_REMOVE_PLAYER: {
+		case MENU_REMOVE_PLAYER: 
+		{
 			int counter = 0;
 			Player* temp = selectPlayer();
 			vector<Player*>::iterator it(players.begin());
-			while (it != players.end()) {
+			while (it != players.end()) 
+			{
 				if (temp == (*it))
 				{
 					players.erase(players.begin() + counter);
 					cout << "\nPlayer removed successfully!!\n";
+					delete temp;
 					break;
 				}
 				else
@@ -76,10 +80,10 @@ int Menu::Start()
 	} while (choice != MENU_EXIT);
 
 	vector<Player*>::iterator it(players.begin());
-	while (it != players.end()) {
+	while (it != players.end()) 
+	{
 		delete *(it++);
 	}
-
 	return 0;
 };
 int Menu::playerMenu::playerStart(Player* player)
@@ -130,7 +134,8 @@ Player* Menu::selectPlayer()
 			cout << "Player selected: " << (*it)->getPlayerName();
 			cout << "\nEnter Password for this Player: ";
 			cin >> password;
-			for (int trys = 0; trys < 3; trys++) {
+			for (int trys = 0; trys < 3; trys++) 
+			{
 				if (((*it)->isPassCorrect(password)))
 				{
 					return (*it);
@@ -145,9 +150,10 @@ Player* Menu::selectPlayer()
 	cout << "Create acount or continue as guest?\n1. Guest\n2. new account\n Choice: ";
 	int choice=0;
 	cin >> choice;
-	switch (choice) {
-	case 1: return new Player("Guest", "", 0);
-	case 2: break;
+	switch (choice) 
+	{
+		case 1: return new Player("Guest", "", 0);
+		case 2: break;
 	}
 	return addPlayer();
 }
