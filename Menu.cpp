@@ -1,4 +1,5 @@
 #include "Menu.h"
+#include "playerCard.h"
 #include "string"
 #include <iostream>
 #include <list>
@@ -102,7 +103,7 @@ int Menu::playerMenu::playerStart(Player* player)
 		switch (choice) 
 		{
 		case MENU_PLAY_GAME: break;
-		case MENU_SHOW_GAME_HISTORY: break;
+		case MENU_SHOW_GAME_HISTORY: { playerCard* test = new playerCard(); test->readfile(); };
 		case MENU_LOGOUT:;
 		default: break;
 		}
