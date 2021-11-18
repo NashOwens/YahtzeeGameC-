@@ -3,7 +3,7 @@
 #include <string>
 #include <fstream>
 
-Player::Player(string playerName, string password, int playerHighscore) : playerName(playerName), password(password), playerHighscore(playerHighscore)  {};
+Player::Player(string playerName, string password, int playerHighscore) : playerName(playerName), password(password), playerHighscore(playerHighscore), diceScores(nullptr), games(0)  {};
 Player::~Player() {}
 
 void Player::printSummary() const
@@ -23,20 +23,22 @@ bool Player::isPassCorrect(string userpassword)
 }
 void Player::readfile()
 {
-	ifstream file("playerCards.txt");
-	//for (int i=0;i<5;i++)
+	ifstream file((this->playerName + ".txt"));
 	file >> *this;
 	file.close();
 }
 void Player::writefile()
 {
-	ofstream file("playerCards.txt");
-	for (int i = 0; i < 5; i++)
-	{
-		file << *this;
-	}
+	ofstream file(this->playerName + ".txt");
+	file << *this;
 	file.close();
-};
+}
+void Player::readPlayers()
+{
+	ifstream file("PlayerDetails.txt");
+	file >= *this;
+	file.close();
+}
 
 
 

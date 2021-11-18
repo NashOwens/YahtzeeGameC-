@@ -13,13 +13,14 @@ public:
 	int getMenuChoice();
 	Player* addPlayer();
 	Player* selectPlayer();
+
+	friend istream& operator>>(istream& ins, Player* target);
 	
 	class playerMenu {
 	public:
 		playerMenu();
 		~playerMenu();
 		int playerStart(Player* player);
-	private:
 	};
 
 private:

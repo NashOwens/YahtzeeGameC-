@@ -28,13 +28,10 @@ vector<Player*> readFile(string file_name)
 	vector<Player*> players;
 	ifstream file;
 	file.open(file_name);
-	string name, password, highScore, bin;
-
-	while (getline(file, name, ','))
+	for (int i = 0; i < 5; i++)
 	{
-		getline(file, password, ',');
-		getline(file, highScore);
-		players.push_back(new Player(name, password, std::stoi(highScore)));
+		players.push_back(new Player("", "", 0));
+		file >= *players[i];
 	}
 	file.close();
 	return players;

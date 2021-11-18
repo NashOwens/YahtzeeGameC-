@@ -92,10 +92,12 @@ int Menu::Start()
 };
 int Menu::playerMenu::playerStart(Player* player)
 {
+	player->readfile();
 	const int MENU_PLAY_GAME = 1;
 	const int MENU_SHOW_GAME_HISTORY = 2;
 	const int MENU_LOGOUT = 3;
 	int choice=-1;
+
 
 	while (choice != MENU_LOGOUT) 
 	{
@@ -106,7 +108,7 @@ int Menu::playerMenu::playerStart(Player* player)
 		switch (choice) 
 		{
 		case MENU_PLAY_GAME: break;
-		case MENU_SHOW_GAME_HISTORY: {  player->readfile();  };
+		case MENU_SHOW_GAME_HISTORY: player->writefile();
 		case MENU_LOGOUT:;
 		default: break;
 		}

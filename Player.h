@@ -5,6 +5,7 @@
 
 using namespace std;
 
+
 class Player
 {
 public:
@@ -17,13 +18,15 @@ public:
 	virtual bool isUserCorrect(string user);
 	void readfile();
 	void writefile();
+	void readPlayers();
 	
 
 	friend istream& operator>>(istream& ins, Player& target)
 	{
 		char c;
-		int length = filelength();
-		for(int i=0; i<length; i++)
+		ins >> target.games;
+		target.diceScores = new int*[target.games+1];
+		for(int i=1; i<target.games+1; i++)
 		{
 			target.diceScores[i] = new int[6];
 			for (int j = 0; j < 6; j++)
@@ -40,46 +43,40 @@ public:
 				}
 			}
 		}
-		
 		return ins;
 	};
 	friend ostream& operator<<(ostream& outs, Player& source)
 	{
 		char c=',';
-		//for (int j = 0; j < 11; j++)
-		//{
-		//	for (int i = 0; i < 2; i++)
-		//	{
-		//		outs << source.diceScores[i][j] << c;
-		//		cout << source.diceScores[i][j];
-		//	}
-		//}
+		outs << source.games << "\n";
+		for (int i = 1; i < source.games+1; i++)
+		{
+			for (int j = 0; j < 6; j++)
+			{
+				outs << source.diceScores[i][j];
+				cout << source.diceScores[i][j];
+				if (!(j == 5))
+				{
+					outs << c;
+				}
+			}
+			outs << "\n";
+		}
 		return outs;
 	}
-	static int filelength() 
+	friend istream& operator>=(istream& ins, Player& target)
 	{
-		ifstream file;
-		file.open("playerCards.txt");
-		string temp;
-		int counter=0;
-		while (getline(file, temp, ','))
-		{
-			for (int i = 0; i < 4; i++)
-			{
-				getline(file, temp, ',');
-			}
-			getline(file, temp);
-			counter++;
-		}
-		file.close();
-		return counter;
+		getline(ins, target.playerName, ',');
+		getline(ins, target.password, ',');
+		ins >> target.playerHighscore;
+		return ins;
 	}
 
 private:
 	string playerName;
 	string password;
 	int playerHighscore=0;
-	int** diceScores = new int*[filelength()];
-	int ones, twos, threes, fours, fives, sixes;
+	int** diceScores;
+	int games;
 };
 
