@@ -2,29 +2,42 @@
 #include <fstream>
 #include <string>
 #include <iostream>
+
 using namespace std;
 
-
-
-playerCard::playerCard() {};
+playerCard::playerCard() : diceScores(diceScores) {};
 playerCard::~playerCard() {};
 
-void playerCard::readfile()
-{
-	ifstream file;
-	file.open("playerCards.txt");
-	string name, password, highScore;
-	int i = 0;
-	int j = 0;
+istream& operator>>(istream& ins, playerCard& target);
+ostream& operator<<(ostream& outs, const playerCard* source);
 
-	while (getline(file, diceScores[i][j], ','))
+void playerCard::readfile(int index)
+{
+	ifstream file("playerCards.txt");
+	for (int i = 0; i < 5; i++)
 	{
-		cout << diceScores;
+		file >> this->diceScores[index][i];
 	}
 	file.close();
 }
-
-void playerCard::displayCard()
+void playerCard::writefile()
 {
-	readfile();
+	ofstream file("playerCards.txt");
+	//file << this;
+	file.close();
+};
+istream& operator>>(istream& ins, playerCard& target)
+{
+	char c;
+	for (int j = 0; j < 5; j++)
+	{
+		//ins >> target.diceScores[0][j];
+		ins >> c;
+	}
+	return ins;
+}
+ostream& operator<<(ostream& outs, playerCard& source)
+{
+	outs << source.getdiceScores();
+	return outs;
 }

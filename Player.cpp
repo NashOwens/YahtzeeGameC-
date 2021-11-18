@@ -1,6 +1,7 @@
 #include "Player.h"
 #include <iostream>
 #include <string>
+#include <fstream>
 
 Player::Player(string playerName, string password, int playerHighscore) : playerName(playerName), password(password), playerHighscore(playerHighscore)  {};
 Player::~Player() {}
@@ -20,6 +21,23 @@ bool Player::isPassCorrect(string userpassword)
 {
 	return (password == userpassword);
 }
+void Player::readfile()
+{
+	ifstream file("playerCards.txt");
+	//for (int i=0;i<5;i++)
+	file >> *this;
+	file.close();
+}
+void Player::writefile()
+{
+	ofstream file("playerCards.txt");
+	for (int i = 0; i < 5; i++)
+	{
+		file << *this;
+	}
+	file.close();
+};
+
 
 
 

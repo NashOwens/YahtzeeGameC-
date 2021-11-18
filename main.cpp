@@ -4,10 +4,12 @@
 #include <list>
 #include <vector>
 #include <fstream>
+#include "playerCard.h"
 
 using namespace std;
 
 vector<Player*> readFile(string file_name);
+
 
 int main() 
 {
@@ -26,7 +28,7 @@ vector<Player*> readFile(string file_name)
 	vector<Player*> players;
 	ifstream file;
 	file.open(file_name);
-	string name, password, highScore;
+	string name, password, highScore, bin;
 
 	while (getline(file, name, ','))
 	{
@@ -37,3 +39,4 @@ vector<Player*> readFile(string file_name)
 	file.close();
 	return players;
 }
+

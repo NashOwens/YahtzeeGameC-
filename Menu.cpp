@@ -4,6 +4,7 @@
 #include <iostream>
 #include <list>
 #include <algorithm>
+#include <fstream>
 
 
 const int MENU_EXIT = 0;
@@ -20,6 +21,8 @@ Menu::~Menu() {};
 
 bool sortHighscore(Player* fp, Player* sp);
 bool sortAlphabet(Player* fp, Player* sp);
+
+int counter;
 
 Menu::playerMenu::playerMenu() {};
 Menu::playerMenu::~playerMenu() {};
@@ -52,21 +55,21 @@ int Menu::Start()
 		case MENU_ADD_PLAYER: players.push_back(addPlayer()); break;
 		case MENU_REMOVE_PLAYER: 
 		{
-			int counter = 0;
+			int count=0;
 			Player* temp = selectPlayer();
 			vector<Player*>::iterator it(players.begin());
 			while (it != players.end()) 
 			{
 				if (temp == (*it))
 				{
-					players.erase(players.begin() + counter);
+					players.erase(players.begin() + count);
 					cout << "\nPlayer removed successfully!!\n";
 					delete temp;
 					break;
 				}
 				else
 				{
-					counter++;
+					count++;
 				}
 				it++;
 			}
@@ -103,7 +106,7 @@ int Menu::playerMenu::playerStart(Player* player)
 		switch (choice) 
 		{
 		case MENU_PLAY_GAME: break;
-		case MENU_SHOW_GAME_HISTORY: { playerCard* test = new playerCard(); test->readfile(); };
+		case MENU_SHOW_GAME_HISTORY: {  player->readfile();  };
 		case MENU_LOGOUT:;
 		default: break;
 		}
@@ -146,6 +149,7 @@ Player* Menu::selectPlayer()
 			}
 		}
 		it++;
+		counter++;
 	}
 	cout << "\nNo Players found...\n";
 	cout << "Create acount or continue as guest?\n1. Guest\n2. new account\n Choice: ";
