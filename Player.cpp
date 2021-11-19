@@ -33,12 +33,6 @@ void Player::writefile()
 	file << *this;
 	file.close();
 }
-void Player::readPlayers()
-{
-	ifstream file("PlayerDetails.txt");
-	file >= *this;
-	file.close();
-}
 
 
 

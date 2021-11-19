@@ -18,7 +18,6 @@ public:
 	virtual bool isUserCorrect(string user);
 	void readfile();
 	void writefile();
-	void readPlayers();
 	
 
 	friend istream& operator>>(istream& ins, Player& target)
@@ -70,6 +69,14 @@ public:
 		getline(ins, target.password, ',');
 		ins >> target.playerHighscore;
 		return ins;
+	}
+	friend ostream& operator<=(ostream& outs, Player& source)
+	{
+		char c = ',';
+		outs << "\n\n";
+		outs << source.playerName << c;
+		outs << source.password << c;
+		outs << source.playerHighscore << "\n";
 	}
 
 private:

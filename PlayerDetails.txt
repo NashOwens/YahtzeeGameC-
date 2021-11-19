@@ -1,3 +1,5 @@
+6
+.,.,0
 nash,nash1,50
 test,test1,25
 abc,abc1,2
