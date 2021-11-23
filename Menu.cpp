@@ -1,6 +1,6 @@
 #include "Menu.h"
 #include "playerCard.h"
-#include "string"
+#include <string>
 #include <iostream>
 #include <list>
 #include <algorithm>
@@ -32,6 +32,7 @@ Menu::playerMenu::~playerMenu() {};
 
 int Menu::Start()
 {
+	readFile("PlayerDetails.txt");
 	int choice;
 	do
 	{
@@ -42,8 +43,8 @@ int Menu::Start()
 		vector<Player*>::iterator it(players.begin());
 		while (it != players.end()) 
 		{
-			(*it)->printSummary();
-			it++;
+			(*it++)->printSummary();
+			//it++;
 		}
 		cout << "\n";
 		displayMenu();
@@ -52,45 +53,72 @@ int Menu::Start()
 
 		switch (choice)
 		{
-		case MENU_CHOOSE_PLAYER: playerMenu().playerStart(selectPlayer()); break;
+		case MENU_CHOOSE_PLAYER: { try { playerMenu().playerStart(selectPlayer()); } catch (string* error) { cout << *error; delete error; } break; }
 		case MENU_ADD_PLAYER: players.push_back(addPlayer()); break;
-		case MENU_REMOVE_PLAYER: 
-		{
-			int count=0;
-			Player* temp = selectPlayer();
-			vector<Player*>::iterator it(players.begin());
-			while (it != players.end()) 
-			{
-				if (temp == (*it))
-				{
-					players.erase(players.begin() + count);
-					cout << "\nPlayer removed successfully!!\n";
-					delete temp;
-					break;
-				}
-				else
-				{
-					count++;
-				}
-				it++;
-			}
-		} 
+		case MENU_REMOVE_PLAYER: { try { removePlayer(); } catch (string* error) { cout << *error; delete error; } break; }
 		case MENU_SORT_ALPHABETICALLY: sort(players.begin(), players.end(), sortAlphabet); break;
 		case MENU_SORT_HIGHSCORE: sort(players.begin(), players.end(), sortHighscore); break;
-
+		case MENU_EXIT: writeFile("PlayerDetails.txt"); break;
 		default:
 			break;
 		}
 
 	} while (choice != MENU_EXIT);
-
 	vector<Player*>::iterator it(players.begin());
 	while (it != players.end()) 
 	{
 		delete *(it++);
 	}
 	return 0;
-};
+}
+void Menu::readFile(string file_name)
+{
+	//vector<Player*> players;
+	ifstream file;
+	file.open(file_name);
+	file >> amountofPlayers;
+	for (int i = 0; i < amountofPlayers; i++)
+	{
+		players.push_back(new Player(".", ".", 0));
+		file >= *players[i];
+	}
+	players.erase(players.begin() + 0);
+	file.close();
+}
+void Menu::writeFile(string file_name)
+{
+	//vector<Player*> players;
+	ofstream file;
+	file.open(file_name);
+	file << amountofPlayers;
+	file << "\n.,.,0\n";
+	for (int i = 0; i < amountofPlayers-1; i++)
+	{
+		file <= *players[i];
+	}
+	file.close();
+}
+void Menu::removePlayer()
+{
+	int count = 0;
+	Player* temp = selectPlayer();
+	vector<Player*>::iterator it(players.begin());
+	while (it != players.end())
+	{
+		if (temp == (*it))
+		{
+			players.erase(players.begin() + count);
+			cout << "\nPlayer removed successfully!!\n";
+			delete temp;
+			break;
+		}
+		else
+		{
+			count++;
+		}
+		it++;
+	}
+}
 int Menu::playerMenu::playerStart(Player* player)
 {
 	player->readfile();
@@ -109,8 +137,8 @@ int Menu::playerMenu::playerStart(Player* player)
 		switch (choice) 
 		{
 		case MENU_PLAY_GAME: break;
-		case MENU_SHOW_GAME_HISTORY: player->writefile();
-		case MENU_LOGOUT:;
+		case MENU_SHOW_GAME_HISTORY: player->displayScorecards();
+		case MENU_LOGOUT: player->writefile();
 		default: break;
 		}
 	}
@@ -154,16 +182,8 @@ Player* Menu::selectPlayer()
 		it++;
 		counter++;
 	}
-	cout << "\nNo Players found...\n";
-	cout << "Create acount or continue as guest?\n1. Guest\n2. new account\n Choice: ";
-	int choice=0;
-	cin >> choice;
-	switch (choice) 
-	{
-		case 1: return new Player("Guest", "", 0);
-		case 2: break;
-	}
-	return addPlayer();
+	string* error = new string("\nNo Players found...\n");
+ 	throw error;
 }
 void Menu::displayMenu()
 {

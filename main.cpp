@@ -20,22 +20,20 @@ int main()
 		_onexit(_CrtDumpMemoryLeaks);
 	#endif
 
-	vector<Player*> playerData = readFile("PlayerDetails.txt");
-
-	return Menu(playerData).Start();
+	return Menu().Start();
 }
-vector<Player*> readFile(string file_name)
-{
-	vector<Player*> players;
-	ifstream file;
-	file.open(file_name);
-	for (int i = 0; i < file.get(); i++)
-	{
-		players.push_back(new Player("", "", 0));
-		file >= *players[i];
-	}
-	players.erase(players.begin() + 0);
-	file.close();
-	return players;
-}
+//vector<Player*> readFile(string file_name)
+//{
+//	vector<Player*> players;
+//	ifstream file;
+//	file.open(file_name);
+//	for (int i = 0; i < file.get(); i++)
+//	{
+//		players.push_back(new Player("", "", 0));
+//		file >= *players[i];
+//	}
+//	players.erase(players.begin() + 0);
+//	file.close();
+//	return players;
+//}
 

@@ -18,6 +18,7 @@ public:
 	virtual bool isUserCorrect(string user);
 	void readfile();
 	void writefile();
+	void displayScorecards();
 	
 
 	friend istream& operator>>(istream& ins, Player& target)
@@ -31,7 +32,7 @@ public:
 			for (int j = 0; j < 6; j++)
 			{
 				ins >> target.diceScores[i][j];
-				cout << target.diceScores[i][j];
+				//cout << target.diceScores[i][j];
 				if (j == 5) 
 				{
 					break;
@@ -53,7 +54,7 @@ public:
 			for (int j = 0; j < 6; j++)
 			{
 				outs << source.diceScores[i][j];
-				cout << source.diceScores[i][j];
+				//cout << source.diceScores[i][j];
 				if (!(j == 5))
 				{
 					outs << c;
@@ -68,15 +69,16 @@ public:
 		getline(ins, target.playerName, ',');
 		getline(ins, target.password, ',');
 		ins >> target.playerHighscore;
+		ins.ignore();
 		return ins;
 	}
 	friend ostream& operator<=(ostream& outs, Player& source)
 	{
 		char c = ',';
-		outs << "\n\n";
 		outs << source.playerName << c;
 		outs << source.password << c;
 		outs << source.playerHighscore << "\n";
+		return outs;
 	}
 
 private:

@@ -13,8 +13,11 @@ public:
 	int getMenuChoice();
 	Player* addPlayer();
 	Player* selectPlayer();
+	void removePlayer();
+	void readFile(string);
+	void writeFile(string);
 
-	friend istream& operator>>(istream& ins, Player* target);
+
 	
 	class playerMenu {
 	public:
@@ -25,6 +28,7 @@ public:
 
 private:
 	vector<Player*> players;
+	int amountofPlayers;
 
 };
 
