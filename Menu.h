@@ -17,8 +17,6 @@ public:
 	void readFile(string);
 	void writeFile(string);
 
-
-	
 	class playerMenu {
 	public:
 		playerMenu();

@@ -44,17 +44,15 @@ int Menu::Start()
 		while (it != players.end()) 
 		{
 			(*it++)->printSummary();
-			//it++;
 		}
 		cout << "\n";
 		displayMenu();
 		choice = getMenuChoice();
 
-
 		switch (choice)
 		{
 		case MENU_CHOOSE_PLAYER: { try { playerMenu().playerStart(selectPlayer()); } catch (string* error) { cout << *error; delete error; } break; }
-		case MENU_ADD_PLAYER: players.push_back(addPlayer()); break;
+		case MENU_ADD_PLAYER: { try { players.push_back(addPlayer()); } catch (string* error) { cout << *error; delete error; } break; }
 		case MENU_REMOVE_PLAYER: { try { removePlayer(); } catch (string* error) { cout << *error; delete error; } break; }
 		case MENU_SORT_ALPHABETICALLY: sort(players.begin(), players.end(), sortAlphabet); break;
 		case MENU_SORT_HIGHSCORE: sort(players.begin(), players.end(), sortHighscore); break;
@@ -73,7 +71,6 @@ int Menu::Start()
 }
 void Menu::readFile(string file_name)
 {
-	//vector<Player*> players;
 	ifstream file;
 	file.open(file_name);
 	file >> amountofPlayers;
@@ -87,7 +84,6 @@ void Menu::readFile(string file_name)
 }
 void Menu::writeFile(string file_name)
 {
-	//vector<Player*> players;
 	ofstream file;
 	file.open(file_name);
 	file << amountofPlayers;
@@ -110,6 +106,7 @@ void Menu::removePlayer()
 			players.erase(players.begin() + count);
 			cout << "\nPlayer removed successfully!!\n";
 			delete temp;
+			amountofPlayers--;
 			break;
 		}
 		else
@@ -137,7 +134,7 @@ int Menu::playerMenu::playerStart(Player* player)
 		switch (choice) 
 		{
 		case MENU_PLAY_GAME: break;
-		case MENU_SHOW_GAME_HISTORY: player->displayScorecards();
+		case MENU_SHOW_GAME_HISTORY: player->displayScorecards(); break;
 		case MENU_LOGOUT: player->writefile();
 		default: break;
 		}
@@ -208,10 +205,24 @@ int Menu::getMenuChoice()
 }
 Player* Menu::addPlayer()
 {
-	string Name, Pass;
+	amountofPlayers++;
+	string Name;
+	string Pass;
 	cout << "Enter your name: ";
 	cin >> Name;
-	cout << "Enter your password: ";
+	vector<Player*>::iterator it(players.begin());
+	while (it!=players.end())
+	{
+		if (!(*it)->checkifTaken(Name))
+		{
+			break;
+		}
+		else {
+			string* error = new string("\nUsername Taken!\n");
+			throw error;
+		}
+	}
+	cout << "Username valid!\n" << "Enter your password: ";
 	cin >> Pass;
 	return new Player(Name, Pass, 0);
 }

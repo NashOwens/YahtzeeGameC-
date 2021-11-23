@@ -9,9 +9,6 @@
 
 using namespace std;
 
-vector<Player*> readFile(string file_name);
-
-
 int main() 
 {
 
