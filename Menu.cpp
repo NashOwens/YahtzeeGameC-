@@ -56,7 +56,7 @@ int Menu::Start()
 		case MENU_REMOVE_PLAYER: { try { removePlayer(); } catch (string* error) { cout << *error; delete error; } break; }
 		case MENU_SORT_ALPHABETICALLY: sort(players.begin(), players.end(), sortAlphabet); break;
 		case MENU_SORT_HIGHSCORE: sort(players.begin(), players.end(), sortHighscore); break;
-		case MENU_EXIT: writeFile("PlayerDetails.txt"); break;
+		case MENU_EXIT: writeFile("PlayerDetails.txt");
 		default:
 			break;
 		}
@@ -79,16 +79,14 @@ void Menu::readFile(string file_name)
 		players.push_back(new Player(".", ".", 0));
 		file >= *players[i];
 	}
-	players.erase(players.begin() + 0);
 	file.close();
 }
 void Menu::writeFile(string file_name)
 {
 	ofstream file;
 	file.open(file_name);
-	file << amountofPlayers;
-	file << "\n.,.,0\n";
-	for (int i = 0; i < amountofPlayers-1; i++)
+	file << amountofPlayers << "\n";
+	for (int i = 0; i < amountofPlayers; i++)
 	{
 		file <= *players[i];
 	}
@@ -127,7 +125,7 @@ int Menu::playerMenu::playerStart(Player* player)
 
 	while (choice != MENU_LOGOUT) 
 	{
-		cout << "Welcome to Yhatzee " << player->getPlayerName() << "\n----------------------";
+		cout << "\n\nWelcome to Yhatzee " << player->getPlayerName() << "\n----------------------";
 		cout << "\n1. Start New Game\n2. Show Game History\n3. Logout\nOption: ";
 
 		cin >> choice;
@@ -205,7 +203,6 @@ int Menu::getMenuChoice()
 }
 Player* Menu::addPlayer()
 {
-	amountofPlayers++;
 	string Name;
 	string Pass;
 	cout << "Enter your name: ";
@@ -213,16 +210,14 @@ Player* Menu::addPlayer()
 	vector<Player*>::iterator it(players.begin());
 	while (it!=players.end())
 	{
-		if (!(*it)->checkifTaken(Name))
+		if ((*it++)->checkifTaken(Name))
 		{
-			break;
-		}
-		else {
 			string* error = new string("\nUsername Taken!\n");
 			throw error;
 		}
 	}
 	cout << "Username valid!\n" << "Enter your password: ";
 	cin >> Pass;
+	amountofPlayers++;
 	return new Player(Name, Pass, 0);
 }

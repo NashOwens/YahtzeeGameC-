@@ -34,9 +34,10 @@ void Player::writefile()
 	ofstream file(this->playerName + ".txt");
 	file << *this;
 	file.close();
-	for (int i = 1; i < games + 1; i++)
+	for (int i = 0; i < games; i++)
 	{
-		delete this->diceScores[i];
+		delete diceScores[i];
+		diceScores[i] = nullptr;
 	}
 }
 bool Player::checkifTaken(string playername)
@@ -46,9 +47,9 @@ bool Player::checkifTaken(string playername)
 void Player::displayScorecards()
 {
 	cout << "\nScoreCard History\n------------------------\n";
-	for (int i = 1; i < this->games+1; i++)
+	for (int i = 0; i < games; i++)
 	{
-		cout << "\n       Game " << i << ":\n";
+		cout << "\n       Game " << i+1 << ":\n";
 		for (int j=0; j<6; j++)
 		{
 		switch (j)

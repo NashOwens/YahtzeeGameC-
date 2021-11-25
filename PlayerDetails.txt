@@ -1,8 +1,5 @@
-7
-.,.,0
+4
 nash,nash1,50
-abc,abc1,2
-meme,meme1,30
-zzz,zzz1,100
+test,test1,50
+abc,abc1,0
 playerCards,123,0
-test,test1,0

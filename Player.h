@@ -26,13 +26,13 @@ public:
 	{
 		char c;
 		ins >> target.games;
-		target.diceScores = new int*[target.games+1];
+		target.diceScores = new int*[target.games];
 		for(int i=0; i<target.games; i++)
 		{
-			target.diceScores[i+1] = new int[6];
+			target.diceScores[i] = new int[6];
 			for (int j = 0; j < 6; j++)
 			{
-				ins >> target.diceScores[i+1][j];
+				ins >> target.diceScores[i][j];
 				//cout << target.diceScores[i][j];
 				if (j == 5) 
 				{
@@ -54,8 +54,7 @@ public:
 		{
 			for (int j = 0; j < 6; j++)
 			{
-				outs << source.diceScores[i+1][j];
-				//cout << source.diceScores[i][j];
+				outs << source.diceScores[i][j];
 				if (!(j == 5))
 				{
 					outs << c;
@@ -67,10 +66,9 @@ public:
 	}
 	friend istream& operator>=(istream& ins, Player& target)
 	{
-		getline(ins, target.playerName, ',');
+		getline(ins.ignore(), target.playerName, ',');
 		getline(ins, target.password, ',');
 		ins >> target.playerHighscore;
-		ins.ignore();
 		return ins;
 	}
 	friend ostream& operator<=(ostream& outs, Player& source)
