@@ -13,7 +13,7 @@ int main()
 {
 
 	#ifdef _DEBUG
-		_CrtSetBreakAlloc(318);
+	//	_CrtSetBreakAlloc(318);
 		_onexit(_CrtDumpMemoryLeaks);
 	#endif
 

@@ -33,7 +33,6 @@ public:
 			for (int j = 0; j < 6; j++)
 			{
 				ins >> target.diceScores[i][j];
-				//cout << target.diceScores[i][j];
 				if (j == 5) 
 				{
 					break;

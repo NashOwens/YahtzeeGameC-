@@ -37,8 +37,8 @@ void Player::writefile()
 	for (int i = 0; i < games; i++)
 	{
 		delete diceScores[i];
-		diceScores[i] = nullptr;
 	}
+	delete[] diceScores;
 }
 bool Player::checkifTaken(string playername)
 {

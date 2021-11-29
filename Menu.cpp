@@ -1,5 +1,6 @@
 #include "Menu.h"
 #include "playerCard.h"
+#include "Game.h"
 #include <string>
 #include <iostream>
 #include <list>
@@ -131,7 +132,7 @@ int Menu::playerMenu::playerStart(Player* player)
 		cin >> choice;
 		switch (choice) 
 		{
-		case MENU_PLAY_GAME: break;
+		case MENU_PLAY_GAME: { Game* g = new Game(); g->Start(); delete g; break; }
 		case MENU_SHOW_GAME_HISTORY: player->displayScorecards(); break;
 		case MENU_LOGOUT: player->writefile();
 		default: break;
