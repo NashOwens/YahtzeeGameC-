@@ -50,16 +50,17 @@ void Player::displayScorecards()
 	for (int i = 0; i < games; i++)
 	{
 		cout << "\n       Game " << i+1 << ":\n";
-		for (int j=0; j<6; j++)
+		i-1;
+		for (int j=0; j<7; j++)
 		{
 		switch (j)
 				{
-		case 1: cout << "\nOnes: " << this->diceScores[i][j]; break;
-		case 2:	cout << "\nTwos: " << this->diceScores[i][j]; break;
-		case 3: cout << "\nThrees: " << this->diceScores[i][j]; break;
-		case 4: cout << "\nFours: " << this->diceScores[i][j]; break;
-		case 5: cout << "\nFives: " << this->diceScores[i][j]; break;
-		case 6: cout << "\nSixes: " << this->diceScores[i][j]; break;
+		case 0: cout << "\nOnes: " << this->diceScores[i][j]; break;
+		case 1:	cout << "\nTwos: " << this->diceScores[i][j]; break;
+		case 2: cout << "\nThrees: " << this->diceScores[i][j]; break;
+		case 3: cout << "\nFours: " << this->diceScores[i][j]; break;
+		case 4: cout << "\nFives: " << this->diceScores[i][j]; break;
+		case 5: cout << "\nSixes: " << this->diceScores[i][j]; break;
 		default: break;
 		}
 		}

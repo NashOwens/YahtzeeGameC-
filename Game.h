@@ -13,7 +13,6 @@ public:
 	void selectDice();
 	void nextRound();
 	
-
 private:
 	Dice* dices;
 	int* Score;
