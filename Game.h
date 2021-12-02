@@ -8,7 +8,7 @@ public:
 	Game();
 	~Game();
 
-	void Start();
+	void Start(Player* player);
 	void rollDice();
 	void selectDice();
 	void nextRound();

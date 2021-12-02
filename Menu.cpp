@@ -18,7 +18,7 @@ const int MENU_SORT_HIGHSCORE = 5;
 
 using namespace std;
 
-Menu::Menu(vector<Player*> players) : players(players) {};
+Menu::Menu(vector<Player*> players) : players(players) , amountofPlayers(0) {};
 Menu::~Menu() {};
 
 bool sortHighscore(Player* fp, Player* sp);
@@ -29,7 +29,7 @@ int counter;
 Menu::playerMenu::playerMenu() {};
 Menu::playerMenu::~playerMenu() {};
 
-
+//Main menu:
 
 int Menu::Start()
 {
@@ -63,6 +63,9 @@ int Menu::Start()
 		}
 
 	} while (choice != MENU_EXIT);
+
+	//delete players form vector here to avoid mem leaks:
+
 	vector<Player*>::iterator it(players.begin());
 	while (it != players.end()) 
 	{
@@ -70,6 +73,9 @@ int Menu::Start()
 	}
 	return 0;
 }
+
+//reads all players from playerDetails.txt into the players vector:
+
 void Menu::readFile(string file_name)
 {
 	ifstream file;
@@ -78,10 +84,13 @@ void Menu::readFile(string file_name)
 	for (int i = 0; i < amountofPlayers; i++)
 	{
 		players.push_back(new Player(".", ".", 0));
-		file >= *players[i];
+		file >= *players[i];			//op overloading used here
 	}
 	file.close();
 }
+
+//writes all players in vector players after the program has exited:
+
 void Menu::writeFile(string file_name)
 {
 	ofstream file;
@@ -93,6 +102,10 @@ void Menu::writeFile(string file_name)
 	}
 	file.close();
 }
+
+//removes player from the vector so when player are written to the txt file
+//the player chosen here will be gone
+
 void Menu::removePlayer()
 {
 	int count = 0;
@@ -115,6 +128,9 @@ void Menu::removePlayer()
 		it++;
 	}
 }
+
+//menu for player after login
+
 int Menu::playerMenu::playerStart(Player* player)
 {
 	player->readfile();
@@ -132,7 +148,7 @@ int Menu::playerMenu::playerStart(Player* player)
 		cin >> choice;
 		switch (choice) 
 		{
-		case MENU_PLAY_GAME: { Game* g = new Game(); g->Start(); delete g; break; }
+		case MENU_PLAY_GAME: { Game* g = new Game(); g->Start(player); delete g; break; }
 		case MENU_SHOW_GAME_HISTORY: player->displayScorecards(); break;
 		case MENU_LOGOUT: player->writefile();
 		default: break;
@@ -140,6 +156,9 @@ int Menu::playerMenu::playerStart(Player* player)
 	}
 	return 0;
 }
+
+//sort functions for main menu
+
 bool sortAlphabet(Player* fp, Player* sp)
 {
 	string fc = fp->getPlayerName();
@@ -150,6 +169,10 @@ bool sortHighscore(Player* fp, Player* sp)
 {
 	return (fp->getPlayerHighScore() > sp->getPlayerHighScore());
 }
+
+//function that iterates through the player vector to find user then password is checked
+//afterwards with 3 attempts
+
 Player* Menu::selectPlayer()
 {
 	string password;
@@ -167,7 +190,7 @@ Player* Menu::selectPlayer()
 			cin >> password;
 			for (int trys = 0; trys < 3; trys++) 
 			{
-				if (((*it)->isPassCorrect(password)))
+				if ((*it)->isPassCorrect(password))
 				{
 					return (*it);
 				}
@@ -181,6 +204,9 @@ Player* Menu::selectPlayer()
 	string* error = new string("\nNo Players found...\n");
  	throw error;
 }
+
+//small function for display on main menu
+
 void Menu::displayMenu()
 {
 	cout << MENU_CHOOSE_PLAYER << ". Choose Player\n";
@@ -202,6 +228,9 @@ int Menu::getMenuChoice()
 	}
 	return choice;
 }
+
+//adds a player to the vector in Menu class
+
 Player* Menu::addPlayer()
 {
 	string Name;

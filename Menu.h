@@ -9,13 +9,18 @@ public:
 	Menu(vector<Player*> players);
 	~Menu();
 	int Start();
-	void displayMenu();
 	int getMenuChoice();
-	Player* addPlayer();
-	Player* selectPlayer();
+
+	void displayMenu();
 	void removePlayer();
 	void readFile(string);
 	void writeFile(string);
+
+	Player* addPlayer();
+	Player* selectPlayer();
+
+	//used a subclass for identification purposes, not using it for its
+	//intended purpose just to clarify
 
 	class playerMenu {
 	public:
